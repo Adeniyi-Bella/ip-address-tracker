@@ -1,13 +1,66 @@
-// import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
 import background from "./images/pattern-bg.png";
 import arrow from "./images/icon-arrow.svg";
 import "leaflet/dist/leaflet.css";
 import icon from "./components/icon";
+import * as React from 'react';
 // import arrow from "../"
 
+
+type UserFormState=null | {
+  ip: string;
+}
 // https://geo.ipify.org/api/v2/country,city?apiKey=at_gky8J1cad3eyynFJRTBgYzg9WkMXi&ipAddress=8.8.8.8
 function App() {
+
+  const [address, setAddress] = React.useState<UserFormState>(null);
+  const [ipAddress, setIpAddress] = useState("")
+  // const checkIpAddress =
+  //   /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/gi
+  // const checkDomain =
+  //   /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/
+
+  useEffect(() => {
+    try {
+      const getInitialData = async () => {
+        const res = await fetch(
+          `https://geo.ipify.org/api/v2/country,city?apiKey=${import.meta.env.VITE_GRID_EXPERIMENTAL_ENABLED}&ipAddress=192.212.174.101`
+        )
+        const data = await res.json()
+        console.log(data);
+        
+        setAddress(data)
+      }
+
+      getInitialData()
+    } catch (error) {
+      console.trace(error)
+    }
+  }, [])
+
+  // const getEnteredData = async () => {
+  //   const res = await fetch(
+  //     `https://geo.ipify.org/api/v2/country,city?apiKey=${
+  //       process.env.REACT_APP_API_KEY
+  //     }&${
+  //       checkIpAddress.test(ipAddress)
+  // //         ? `ipAddress=${ipAddress}`
+  //         : checkDomain.test(ipAddress)
+  // //         ? `domain=${ipAddress}`
+  //         : ""
+  //     }`
+  //     // https://geo.ipify.org/api/v2/country,city?apiKey=${API_KEY}&ipAddress=8.8.8.8&domain=google.com
+  //   )
+  //   const data = await res.json()
+  //   setAddress(data)
+  // }
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
+  //   getEnteredData()
+  //   setIpAddress("")
+  // }
   return (
     <>
       <section>
@@ -52,7 +105,7 @@ function App() {
               <article className="lg:border-r lg:border-slate-400 p-6">
                 <h2 className="text-sm uppercase text-slate-600">IP Address</h2>
                 <p className="font-bold text-slate-900 text-2xl">
-                  {/* {address.ip} */}192.212.174.101
+                  {address?.ip}
                 </p>
               </article>
 
