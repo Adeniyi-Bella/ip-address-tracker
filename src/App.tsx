@@ -1,8 +1,9 @@
 // import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
+import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
 import background from "./images/pattern-bg.png";
 import arrow from "./images/icon-arrow.svg";
-
+import "leaflet/dist/leaflet.css";
+import icon from "./components/icon";
 // import arrow from "../"
 
 // https://geo.ipify.org/api/v2/country,city?apiKey=at_gky8J1cad3eyynFJRTBgYzg9WkMXi&ipAddress=8.8.8.8
@@ -40,20 +41,63 @@ function App() {
             </button>
           </form>
         </div>
-        
-        <div
-          className="bg-white rounded-xl p-8 shadow max-w-6xl mx-auto grid grid-cols-1 gap-5 text-center md:grid-cols-2 lg:grid-cols-4 lg:gap-0 lg:text-left -mb-10 relative lg:-mb-32"
-          style={{
-            zIndex: 10000,
-          }}
-        >
-          <article className="lg:border-r lg:border-slate-400 p-6">
-            <h2 className="text-sm uppercase text-slate-600">IP Address</h2>
-            <p className="font-bold text-slate-900 text-2xl">
-              {/* {address.ip} */}
-            </p>
+        <>
+          <article className="p-8">
+            <div
+              className="bg-white rounded-xl p-8 shadow max-w-6xl mx-auto grid grid-cols-1 gap-5 text-center md:grid-cols-2 lg:grid-cols-4 lg:gap-0 lg:text-left -mb-10 relative lg:-mb-32"
+              style={{
+                zIndex: 10000,
+              }}
+            >
+              <article className="lg:border-r lg:border-slate-400 p-6">
+                <h2 className="text-sm uppercase text-slate-600">IP Address</h2>
+                <p className="font-bold text-slate-900 text-2xl">
+                  {/* {address.ip} */}192.212.174.101
+                </p>
+              </article>
+
+              <article className="lg:border-r lg:border-slate-400 p-6">
+                <h2 className="text-sm uppercase text-slate-600">Location</h2>
+                <p className="font-bold text-slate-900 text-2xl">
+                  {" "}
+                  Brooklyn
+                  {/* {address.location.city}, {address.location.region} */}
+                </p>
+              </article>
+
+              <article className="lg:border-r lg:border-slate-400 p-6">
+                <h2 className="text-sm uppercase text-slate-600">Timezone</h2>
+                <p className="font-bold text-slate-900 text-2xl">
+                  UTC -05:00
+                  {/* UTC {address.location.timezone} */}
+                </p>
+              </article>
+
+              <article className="p-6">
+                <h2 className="text-sm uppercase text-slate-600">ISP</h2>
+                <p className="font-bold text-slate-900 text-2xl">
+                  {/* {address.isp} */}SpaceX
+                </p>
+              </article>
+            </div>
           </article>
-        </div>
+
+          <MapContainer
+            center={[51.505, -0.09]}
+            zoom={13}
+            scrollWheelZoom={true}
+            style={{ height: "100vh", width: "100vw" }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker icon={icon} position={[51.505, -0.09]}>
+              <Popup>This is the location of the IP Address or Domain</Popup>
+            </Marker>
+            {/* <Markerposition address={address} /> */}
+          </MapContainer>
+        </>
       </section>
     </>
   );
